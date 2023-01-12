@@ -3,5 +3,10 @@ CREATE TRIGGER remove_item
 AFTER INSERT
 ON orders
 BEGIN
-    UPDATE items SET quantity = quantity - NEW.number;
+    SET @num_items = SELECT quantity FROM items WHERE name = NEW.item_name;
+    IF num_items > 0 THEN
+        UPDATE items SET quantity = quantity - NEW.number;
+    ELSE
+        UPDATE items SET quantity = 0;
+    END IF
 END;
