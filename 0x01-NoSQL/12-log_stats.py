@@ -16,7 +16,8 @@ if __name__ == '__main__':
     puts = ng_coll.count_documents({"method": "PUT"})
     patchs = ng_coll.count_documents({"method": "PATCH"})
     deletes = ng_coll.count_documents({"method": "DELETE"})
-    status_checks = ng_coll.count_documents({"path": {"$regex": 'status'}})
+    status_checks = ng_coll.count_documents(
+        {"path": {"$regex": 'status'}, "method": "GET"})
 
     print("{} logs".format(logs))
     print("Methods:")

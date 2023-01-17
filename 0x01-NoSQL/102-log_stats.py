@@ -16,19 +16,20 @@ if __name__ == '__main__':
     puts = ng_coll.count_documents({"method": "PUT"})
     patchs = ng_coll.count_documents({"method": "PATCH"})
     deletes = ng_coll.count_documents({"method": "DELETE"})
-    status_checks = ng_coll.count_documents({"path": {"$regex": 'status'}})
+    status_checks = ng_coll.count_documents(
+        {"path": {"$regex": 'status'}, "method": "GET"})
     popular_ips = ng_coll.aggregate([{"$group": {"_id": "$ip", "count": {
-                  "$sum": 1}}}, {"$sort": {"count": -1}}, {"$limit": 10}])
+        "$sum": 1}}}, {"$sort": {"count": -1}}, {"$limit": 10}])
 
     print("{} logs".format(logs))
     print("Methods:")
-    print("    method GET: {}".format(gets))
-    print("    method POST: {}".format(posts))
-    print("    method PUT: {}".format(puts))
-    print("    method PATCH: {}".format(patchs))
-    print("    method DELETE: {}".format(deletes))
+    print("\tmethod GET: {}".format(gets))
+    print("\tmethod POST: {}".format(posts))
+    print("\tmethod PUT: {}".format(puts))
+    print("\tmethod PATCH: {}".format(patchs))
+    print("\tmethod DELETE: {}".format(deletes))
     print("{} status check".format(status_checks))
 
     print("IPs:")
     for ip in popular_ips:
-        print("    {}: {}".format(ip.get('_id'), ip.get('count')))
+        print("\t{}: {}".format(ip.get('_id'), ip.get('count')))
