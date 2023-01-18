@@ -9,7 +9,9 @@ import typing
 
 
 def increment(func: typing.Callable) -> typing.Callable:
-    def wrapper(url):
+    """Increments number of calls"""
+    def wrapper(url: str) -> typing.Callable:
+        """Increments number of calls"""
         r = redis.Redis()
         existing_count = r.get('count:{}'.format(url))
         if existing_count is None:

@@ -9,7 +9,7 @@ from functools import wraps
 def count_calls(method: typing.Callable) -> typing.Callable:
     """increments counter"""
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs) -> typing.Callable:
         self._redis.incr(str(method.__qualname__))
         return method(*args, **kwargs)
 
@@ -21,7 +21,7 @@ def call_history(method: typing.Callable) -> typing.Callable:
     input_list = "{}:inputs".format(method.__qualname__)
     output_list = "{}:outputs".format(method.__qualname__)
 
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs) -> typing.Callable:
         """stores argument history"""
         for arg in args:
             self._redis.rpush(input_list, str(arg))
